@@ -1,6 +1,5 @@
-package com.example.victor.mobilejogos.Game.ListGames
+package com.example.victor.mobilejogos.Game.listGames
 
-import android.view.View
 import com.example.victor.mobilejogos.Game.Game
 
 interface OnItemClickListener {

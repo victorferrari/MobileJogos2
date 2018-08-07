@@ -1,4 +1,4 @@
-package com.example.victor.mobilejogos.Game.ListGames
+package com.example.victor.mobilejogos.Game.listGames
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
