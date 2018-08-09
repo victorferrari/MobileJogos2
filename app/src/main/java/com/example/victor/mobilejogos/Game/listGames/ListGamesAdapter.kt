@@ -8,9 +8,10 @@ import com.example.victor.mobilejogos.R.layout.game_item_list
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.game_item_list.*
 import kotlinx.android.synthetic.main.game_item_list.view.*
 
-class ListGamesAdapter(private val context: Context?) : GroupAdapter<ViewHolder>() {
+class ListGamesAdapter(private val context: Context) : GroupAdapter<ViewHolder>() {
 
     private var onItemClickListener: OnItemClickListener? = null
 
@@ -18,9 +19,9 @@ class ListGamesAdapter(private val context: Context?) : GroupAdapter<ViewHolder>
         override fun getLayout() = game_item_list
 
         override fun bind(viewHolder: ViewHolder, position: Int) {
-            game?.let { safeListGames ->
-                val game: Game = safeListGames
-                viewHolder.itemView.gameImage.setOnClickListener { onItemClickListener?.onClick(safeListGames) }
+            game?.let { safeGame ->
+                val game: Game = safeGame
+                viewHolder.itemView.setOnClickListener { onItemClickListener?.onClick(safeGame) }
                 Glide.with(context)
                         .load(game.image)
                         .centerCrop()

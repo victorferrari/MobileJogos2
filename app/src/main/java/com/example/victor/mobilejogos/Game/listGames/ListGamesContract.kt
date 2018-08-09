@@ -1,10 +1,10 @@
 package com.example.victor.mobilejogos.Game.listGames
 
-import com.example.victor.mobilejogos.Game.Game
+import com.example.victor.mobilejogos.Game.ListGames
 
 interface ListGamesContract {
     interface View {
-        fun displayListGames(listGames : List<Game>)
+        fun displayListGames(listGames : ListGames)
         fun setMessage()
     }
 }
