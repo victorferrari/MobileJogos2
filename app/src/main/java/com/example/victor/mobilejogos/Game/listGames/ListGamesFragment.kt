@@ -8,18 +8,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.victor.mobilejogos.Game.BackButtonListener
 import com.example.victor.mobilejogos.Game.Game
 import com.example.victor.mobilejogos.Game.GameDetails.GameDetailsFragment
 import com.example.victor.mobilejogos.Game.ListGames
 import com.example.victor.mobilejogos.R
 import kotlinx.android.synthetic.main.fragment_list_games.*
+import ru.terrakok.cicerone.Cicerone
+import ru.terrakok.cicerone.Router
 
-class ListGamesFragment : Fragment(), ListGamesContract.View, OnItemClickListener {
+class ListGamesFragment : Fragment(), ListGamesContract.View, OnItemClickListener, BackButtonListener {
 
     lateinit var presenter: ListGamesPresenter
     lateinit var adapter: ListGamesAdapter
-
+    lateinit var router: Router
     var container: ViewGroup? = null
+
+    companion object {
+        val className : String = ListGamesFragment::class.java.simpleName
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -37,6 +44,8 @@ class ListGamesFragment : Fragment(), ListGamesContract.View, OnItemClickListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        router = (parentFragment as ContainerFragment).cicerone.router
+
         recyclerGames.adapter = adapter
         recyclerGames.layoutManager = LinearLayoutManager(context)
         adapter.setOnItemClickListener(this)
@@ -45,10 +54,12 @@ class ListGamesFragment : Fragment(), ListGamesContract.View, OnItemClickListene
     }
 
     override fun onClick(game: Game) {
-        val fm = getFragmentManager()
-        val ft = fm?.beginTransaction()
+        router.navigateTo(GameDetailsFragment.className, game)
+    }
 
-        ft?.add(container?.id ?: 0, GameDetailsFragment.newInstance(game))?.commit()
+    override fun onBackPressed(): Boolean {
+        router.exit()
+        return true
     }
 
     override fun displayListGames(listGames: ListGames) {

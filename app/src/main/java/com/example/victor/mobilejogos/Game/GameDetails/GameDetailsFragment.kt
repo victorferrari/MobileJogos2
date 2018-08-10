@@ -1,23 +1,28 @@
 package com.example.victor.mobilejogos.Game.GameDetails
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.example.victor.mobilejogos.Game.BackButtonListener
 import com.example.victor.mobilejogos.Game.Game
+import com.example.victor.mobilejogos.Game.listGames.ContainerFragment
 import com.example.victor.mobilejogos.R
 import kotlinx.android.synthetic.main.fragment_game_details.*
-import kotlinx.android.synthetic.main.fragment_game_details.view.*
+import ru.terrakok.cicerone.Router
 
-class GameDetailsFragment : Fragment() {
+class GameDetailsFragment : Fragment(), BackButtonListener{
 
     lateinit var game : Game
+    lateinit var router: Router
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    companion object {
+        fun newInstance(args: Game) : GameDetailsFragment = GameDetailsFragment().apply {
+            game = args
+        }
+        val className : String = GameDetailsFragment::class.java.simpleName
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +35,7 @@ class GameDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        router = (parentFragment as ContainerFragment).cicerone.router
         Glide.with(context)
                 .load(game.image)
                 .centerCrop()
@@ -40,10 +46,9 @@ class GameDetailsFragment : Fragment() {
         detailsPlatformsFragment.text = getPlatforms(game.platforms)
     }
 
-    companion object {
-        fun newInstance(args: Game) : GameDetailsFragment = GameDetailsFragment().apply {
-            game = args
-        }
+    override fun onBackPressed(): Boolean {
+        router.exit()
+        return true
     }
 
     private fun getPlatforms(plataformas: List<String>): StringBuilder {
