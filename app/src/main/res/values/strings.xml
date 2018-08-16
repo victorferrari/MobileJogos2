@@ -3,4 +3,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="listaGames1">Lista de Games 1</string>
+    <string name="listaGames2">Lista de Games 2</string>
 </resources>

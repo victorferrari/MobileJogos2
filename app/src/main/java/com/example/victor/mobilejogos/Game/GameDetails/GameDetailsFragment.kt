@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.example.victor.mobilejogos.Game.BackButtonListener
+import com.example.victor.mobilejogos.MainActivity.BackButtonListener
 import com.example.victor.mobilejogos.Game.Game
-import com.example.victor.mobilejogos.Game.listGames.ContainerFragment
+import com.example.victor.mobilejogos.MainActivity.ContainerFragment
 import com.example.victor.mobilejogos.R
 import kotlinx.android.synthetic.main.fragment_game_details.*
 import ru.terrakok.cicerone.Router
 
-class GameDetailsFragment : Fragment(), BackButtonListener{
+class GameDetailsFragment : Fragment(), BackButtonListener {
 
     lateinit var game : Game
     lateinit var router: Router

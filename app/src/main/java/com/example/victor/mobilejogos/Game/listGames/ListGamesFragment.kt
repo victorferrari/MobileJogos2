@@ -8,13 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.victor.mobilejogos.Game.BackButtonListener
+import com.example.victor.mobilejogos.MainActivity.BackButtonListener
 import com.example.victor.mobilejogos.Game.Game
 import com.example.victor.mobilejogos.Game.GameDetails.GameDetailsFragment
 import com.example.victor.mobilejogos.Game.ListGames
+import com.example.victor.mobilejogos.MainActivity.ContainerFragment
 import com.example.victor.mobilejogos.R
 import kotlinx.android.synthetic.main.fragment_list_games.*
-import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Router
 
 class ListGamesFragment : Fragment(), ListGamesContract.View, OnItemClickListener, BackButtonListener {
@@ -63,7 +63,7 @@ class ListGamesFragment : Fragment(), ListGamesContract.View, OnItemClickListene
     }
 
     override fun displayListGames(listGames: ListGames) {
-        progressbar.visibility = View.GONE
+        //progressbar.visibility = View.GONE
         adapter.setData(listGames)
     }
 
