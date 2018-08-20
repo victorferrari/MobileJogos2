@@ -1,6 +1,6 @@
 package com.example.victor.mobilejogos.api
 
-import com.example.victor.mobilejogos.Game.ListGames
+import com.example.victor.mobilejogos.presentation.game.ListGames
 import retrofit2.Call
 import retrofit2.http.GET
 

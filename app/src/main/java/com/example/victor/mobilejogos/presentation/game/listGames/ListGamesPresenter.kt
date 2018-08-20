@@ -1,13 +1,13 @@
-package com.example.victor.mobilejogos.Game.listGames
+package com.example.victor.mobilejogos.presentation.game.listGames
 
-import com.example.victor.mobilejogos.Game.ListGames
+import com.example.victor.mobilejogos.presentation.game.ListGames
 import com.example.victor.mobilejogos.api.GamesAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
-class ListGamesPresenter(private val view: ListGamesContract.View) {
+class ListGamesPresenter @Inject constructor(private val view: ListGamesContract) {
 
     fun getListGames() {
         val call = GamesAPI().GamesService().getGames()

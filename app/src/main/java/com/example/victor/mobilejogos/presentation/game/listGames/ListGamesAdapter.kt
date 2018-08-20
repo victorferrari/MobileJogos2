@@ -1,14 +1,13 @@
-package com.example.victor.mobilejogos.Game.listGames
+package com.example.victor.mobilejogos.presentation.game.listGames
 
 import android.content.Context
 import com.bumptech.glide.Glide
-import com.example.victor.mobilejogos.Game.Game
-import com.example.victor.mobilejogos.Game.ListGames
+import com.example.victor.mobilejogos.presentation.game.Game
+import com.example.victor.mobilejogos.presentation.game.ListGames
 import com.example.victor.mobilejogos.R.layout.game_item_list
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.game_item_list.*
 import kotlinx.android.synthetic.main.game_item_list.view.*
 
 class ListGamesAdapter(private val context: Context) : GroupAdapter<ViewHolder>() {
@@ -35,6 +34,7 @@ class ListGamesAdapter(private val context: Context) : GroupAdapter<ViewHolder>(
     }
 
     fun setData(listGames: ListGames) {
+        clear()
         listGames.games.forEach { game ->
             add(GameItem(game))
         }

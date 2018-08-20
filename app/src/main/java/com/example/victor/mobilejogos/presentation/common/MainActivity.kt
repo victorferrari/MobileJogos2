@@ -1,35 +1,67 @@
-package com.example.victor.mobilejogos.MainActivity
+package com.example.victor.mobilejogos.presentation.common
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.victor.mobilejogos.R
 import com.example.victor.mobilejogos.R.id.*
+import com.example.victor.mobilejogos.data.ApplicationComponent
+import com.example.victor.mobilejogos.data.ApplicationModule
+import com.example.victor.mobilejogos.data.DaggerApplicationComponent
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Navigator
+import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.commands.Back
 import ru.terrakok.cicerone.commands.Command
 import ru.terrakok.cicerone.commands.Replace
 import ru.terrakok.cicerone.commands.SystemMessage
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
     private val listGame1: ListGames1TabFragment by lazy { ListGames1TabFragment().apply { addFragment(this) } }
     private val listGame2: ListGames2TabFragment by lazy { ListGames2TabFragment().apply { addFragment(this) } }
-
     private val FRAGMENT_TAGS = arrayOf(ListGames1TabFragment.className, ListGames2TabFragment.className)
 
-    private val localCicerone = Cicerone.create()
+    val localCicerone: Cicerone<Router> = Cicerone.create()
+
+    companion object {
+        lateinit var daggerComponent: ApplicationComponent
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        daggerComponent = DaggerApplicationComponent.builder()
+                .applicationModule(ApplicationModule(applicationContext))
+                .build()
+
         setupNavigationBar()
 
         if (savedInstanceState == null) {
             bottomNavigationView.selectedItemId = navigationLista1
+        }
+
+    }
+
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        localCicerone.navigatorHolder.setNavigator(navigator)
+    }
+
+    override fun onPause() {
+        localCicerone.navigatorHolder.removeNavigator()
+        super.onPause()
+    }
+
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.flowContainer)
+        if (fragment != null && fragment is BackButtonListener && fragment.onBackPressed()) {
+            return
+        } else {
+            finish()
         }
     }
 
@@ -78,25 +110,6 @@ class MainActivity : AppCompatActivity(){
                 }
             }
             framentTransaction.attach(targetFragment).commitNow()
-        }
-    }
-
-    override fun onResumeFragments() {
-        super.onResumeFragments()
-        localCicerone.navigatorHolder.setNavigator(navigator)
-    }
-
-    override fun onPause() {
-        localCicerone.navigatorHolder.removeNavigator()
-        super.onPause()
-    }
-
-    override fun onBackPressed() {
-        val fragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
-        if (fragment != null && fragment is BackButtonListener && fragment.onBackPressed()) {
-            return
-        } else {
-            finish()
         }
     }
 }

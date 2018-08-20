@@ -1,4 +1,4 @@
-package com.example.victor.mobilejogos.Game
+package com.example.victor.mobilejogos.presentation.game
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

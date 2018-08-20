@@ -1,4 +1,4 @@
-package com.example.victor.mobilejogos.Game.GameDetails
+package com.example.victor.mobilejogos.presentation.game.gameDetails
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.example.victor.mobilejogos.MainActivity.BackButtonListener
-import com.example.victor.mobilejogos.Game.Game
-import com.example.victor.mobilejogos.MainActivity.ContainerFragment
+import com.example.victor.mobilejogos.presentation.common.BackButtonListener
+import com.example.victor.mobilejogos.presentation.game.Game
+import com.example.victor.mobilejogos.presentation.common.ContainerFragment
 import com.example.victor.mobilejogos.R
 import kotlinx.android.synthetic.main.fragment_game_details.*
 import ru.terrakok.cicerone.Router

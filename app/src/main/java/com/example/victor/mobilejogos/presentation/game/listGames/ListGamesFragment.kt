@@ -1,4 +1,4 @@
-package com.example.victor.mobilejogos.Game.listGames
+package com.example.victor.mobilejogos.presentation.game.listGames
 
 import android.content.Context
 import android.os.Bundle
@@ -8,18 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.victor.mobilejogos.MainActivity.BackButtonListener
-import com.example.victor.mobilejogos.Game.Game
-import com.example.victor.mobilejogos.Game.GameDetails.GameDetailsFragment
-import com.example.victor.mobilejogos.Game.ListGames
-import com.example.victor.mobilejogos.MainActivity.ContainerFragment
+import com.example.victor.mobilejogos.presentation.common.BackButtonListener
+import com.example.victor.mobilejogos.presentation.game.Game
+import com.example.victor.mobilejogos.presentation.game.gameDetails.GameDetailsFragment
+import com.example.victor.mobilejogos.presentation.game.ListGames
+import com.example.victor.mobilejogos.presentation.common.ContainerFragment
 import com.example.victor.mobilejogos.R
 import kotlinx.android.synthetic.main.fragment_list_games.*
 import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
-class ListGamesFragment : Fragment(), ListGamesContract.View, OnItemClickListener, BackButtonListener {
+class ListGamesFragment : Fragment(), ListGamesContract, OnItemClickListener, BackButtonListener{
 
+    @Inject
     lateinit var presenter: ListGamesPresenter
+
     lateinit var adapter: ListGamesAdapter
     lateinit var router: Router
     var container: ViewGroup? = null
@@ -28,8 +31,18 @@ class ListGamesFragment : Fragment(), ListGamesContract.View, OnItemClickListene
         val className : String = ListGamesFragment::class.java.simpleName
     }
 
+    val component: ListGamesComponent? by lazy {
+        context?.let {
+            DaggerListGamesComponent.builder()
+                    .flowComponent((parentFragment as ContainerFragment).component)
+                    .listGamesModule(ListGamesModule(this))
+                    .build()
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        component?.inject(this)
         adapter = ListGamesAdapter(context)
     }
 
@@ -49,7 +62,6 @@ class ListGamesFragment : Fragment(), ListGamesContract.View, OnItemClickListene
         recyclerGames.adapter = adapter
         recyclerGames.layoutManager = LinearLayoutManager(context)
         adapter.setOnItemClickListener(this)
-        presenter = ListGamesPresenter(this)
         presenter.getListGames()
     }
 
@@ -63,12 +75,10 @@ class ListGamesFragment : Fragment(), ListGamesContract.View, OnItemClickListene
     }
 
     override fun displayListGames(listGames: ListGames) {
-        //progressbar.visibility = View.GONE
         adapter.setData(listGames)
     }
 
     override fun setMessage() {
         Toast.makeText(context, "Falha no acesso ao servidor", Toast.LENGTH_SHORT).show()
-        progressbar.visibility = View.GONE
     }
 }

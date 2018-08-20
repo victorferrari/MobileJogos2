@@ -1,5 +1,4 @@
-package com.example.victor.mobilejogos.MainActivity
-
+package com.example.victor.mobilejogos.presentation.common
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,21 +6,31 @@ import android.support.v4.app.FragmentActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.victor.mobilejogos.Game.listGames.ListGamesFragment
+import com.example.victor.mobilejogos.presentation.game.listGames.ListGamesFragment
 import com.example.victor.mobilejogos.R
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 sealed class ContainerFragment : Fragment(), BackButtonListener {
 
-    var cicerone: Cicerone<Router> = Cicerone.create()
+    @Inject
+    lateinit var cicerone: Cicerone<Router>
+
+    @Inject
     lateinit var navigator: FlowNavigator
 
-    companion object {
-        val className: String = ContainerFragment::class.java.simpleName
+    val component: FlowComponent? by lazy {
+        context?.let {
+            DaggerFlowComponent.builder()
+                    .applicationComponent(MainActivity.daggerComponent)
+                    .flowModule(FlowModule(activity as FragmentActivity, childFragmentManager, R.id.fragmentContainer))
+                    .build()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        component?.inject(this)
         return inflater.inflate(R.layout.fragment_container, container, false)
     }
 
@@ -32,7 +41,6 @@ sealed class ContainerFragment : Fragment(), BackButtonListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         if (childFragmentManager.findFragmentById(R.id.fragmentContainer) == null)
             cicerone.router.replaceScreen(ListGamesFragment.className)
     }
@@ -60,7 +68,6 @@ class ListGames1TabFragment : ContainerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         if (childFragmentManager.findFragmentById(R.id.fragmentContainer) == null)
             cicerone.router.replaceScreen(ListGamesFragment.className)
     }
@@ -68,12 +75,11 @@ class ListGames1TabFragment : ContainerFragment() {
 
 class ListGames2TabFragment : ContainerFragment() {
     companion object {
-        val className: String = ListGames1TabFragment::class.java.simpleName
+        val className: String = ListGames2TabFragment::class.java.simpleName
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         if (childFragmentManager.findFragmentById(R.id.fragmentContainer) == null)
             cicerone.router.replaceScreen(ListGamesFragment.className)
     }
