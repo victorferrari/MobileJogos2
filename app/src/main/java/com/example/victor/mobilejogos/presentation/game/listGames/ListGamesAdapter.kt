@@ -33,10 +33,7 @@ class ListGamesAdapter(private val context: Context) : GroupAdapter<ViewHolder>(
         this.onItemClickListener = onItemClickListener
     }
 
-    fun setData(listGames: ListGames) {
-        clear()
-        listGames.games.forEach { game ->
-            add(GameItem(game))
-        }
+    fun setData(game: Game) {
+        add(GameItem(game))
     }
 }

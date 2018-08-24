@@ -58,10 +58,11 @@ class ListGamesFragment : Fragment(), ListGamesContract, OnItemClickListener, Ba
         super.onViewCreated(view, savedInstanceState)
 
         router = (parentFragment as ContainerFragment).cicerone.router
-
+        clearAdapter()
         recyclerGames.adapter = adapter
         recyclerGames.layoutManager = LinearLayoutManager(context)
         adapter.setOnItemClickListener(this)
+
         presenter.getListGames()
     }
 
@@ -74,11 +75,16 @@ class ListGamesFragment : Fragment(), ListGamesContract, OnItemClickListener, Ba
         return true
     }
 
-    override fun displayListGames(listGames: ListGames) {
-        adapter.setData(listGames)
+    override fun displayListGames(game: Game) {
+        adapter.setData(game)
     }
 
     override fun setMessage() {
         Toast.makeText(context, "Falha no acesso ao servidor", Toast.LENGTH_SHORT).show()
+    }
+
+    fun clearAdapter() {
+        adapter.clear()
+        adapter.notifyDataSetChanged()
     }
 }
