@@ -12,13 +12,10 @@ import com.example.victor.mobilejogos.presentation.common.ContainerFragment
 import com.example.victor.mobilejogos.R
 import kotlinx.android.synthetic.main.fragment_game_details.*
 import ru.terrakok.cicerone.Router
-import javax.inject.Inject
 
 class GameDetailsFragment : Fragment(), BackButtonListener {
 
     lateinit var game : Game
-
-    @Inject
     lateinit var router: Router
 
     companion object {
@@ -38,6 +35,7 @@ class GameDetailsFragment : Fragment(), BackButtonListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        router = (parentFragment as ContainerFragment).cicerone.router
         Glide.with(context)
                 .load(game.image)
                 .centerCrop()

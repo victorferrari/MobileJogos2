@@ -1,5 +1,6 @@
 package com.example.victor.mobilejogos.api
 
+import com.example.victor.mobilejogos.presentation.game.Game
 import com.example.victor.mobilejogos.presentation.game.ListGames
 import retrofit2.http.GET
 import rx.Observable

@@ -3,19 +3,16 @@ package com.example.victor.mobilejogos.presentation.game.listGames
 import android.content.Context
 import com.bumptech.glide.Glide
 import com.example.victor.mobilejogos.presentation.game.Game
+import com.example.victor.mobilejogos.presentation.game.ListGames
 import com.example.victor.mobilejogos.R.layout.game_item_list
-import com.jakewharton.rxbinding2.view.clicks
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.game_item_list.view.*
 
 class ListGamesAdapter(private val context: Context) : GroupAdapter<ViewHolder>() {
 
-    private val onItemSelectedSubject: PublishSubject<Game> = PublishSubject.create()
-    val onItemSelected: Observable<Game> = onItemSelectedSubject
+    private var onItemClickListener: OnItemClickListener? = null
 
     inner class GameItem(private val game: Game) : Item() {
         override fun getLayout() = game_item_list
@@ -23,13 +20,17 @@ class ListGamesAdapter(private val context: Context) : GroupAdapter<ViewHolder>(
         override fun bind(viewHolder: ViewHolder, position: Int) {
             game?.let { safeGame ->
                 val game: Game = safeGame
-                viewHolder.itemView.clicks().subscribe(){onItemSelectedSubject.onNext(game)}
+                viewHolder.itemView.setOnClickListener { onItemClickListener?.onClick(safeGame) }
                 Glide.with(context)
                         .load(game.image)
                         .centerCrop()
                         .into(viewHolder.itemView.gameImage)
             }
         }
+    }
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.onItemClickListener = onItemClickListener
     }
 
     fun setData(game: Game) {
