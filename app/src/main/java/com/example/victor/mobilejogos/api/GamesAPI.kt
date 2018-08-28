@@ -8,13 +8,13 @@ import rx.Observable
 
 class GamesAPI {
 
-private val retrofit = Retrofit.Builder()
-        .baseUrl("https://dl.dropboxusercontent.com/")
-        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    private val retrofit = Retrofit.Builder()
+            .baseUrl("https://dl.dropboxusercontent.com/")
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
-fun loadGames(): Observable<Game>{
+    fun loadGames(): Observable<Game> {
         val service: GamesService = retrofit.create(GamesService::class.java)
         return service.getGames()
                 .flatMap { gameResults -> Observable.from(gameResults.games) }

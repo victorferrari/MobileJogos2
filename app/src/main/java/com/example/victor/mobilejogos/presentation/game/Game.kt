@@ -15,4 +15,4 @@ data class Game(
         @SerializedName("trailer")
         val trailer: String,
         @SerializedName("platforms")
-        val platforms: List<String>):Serializable
+        val platforms: List<String>) : Serializable

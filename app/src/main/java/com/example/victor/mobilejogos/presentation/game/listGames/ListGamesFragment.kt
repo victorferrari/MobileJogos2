@@ -11,20 +11,21 @@ import android.widget.Toast
 import com.example.victor.mobilejogos.presentation.common.BackButtonListener
 import com.example.victor.mobilejogos.presentation.game.Game
 import com.example.victor.mobilejogos.presentation.game.gameDetails.GameDetailsFragment
-import com.example.victor.mobilejogos.presentation.game.ListGames
 import com.example.victor.mobilejogos.presentation.common.ContainerFragment
 import com.example.victor.mobilejogos.R
 import kotlinx.android.synthetic.main.fragment_list_games.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-class ListGamesFragment : Fragment(), ListGamesContract, OnItemClickListener, BackButtonListener{
+class ListGamesFragment : Fragment(), ListGamesContract, BackButtonListener{
 
     @Inject
     lateinit var presenter: ListGamesPresenter
 
-    lateinit var adapter: ListGamesAdapter
+    @Inject
     lateinit var router: Router
+
+    lateinit var adapter: ListGamesAdapter
     var container: ViewGroup? = null
 
     companion object {
@@ -57,17 +58,14 @@ class ListGamesFragment : Fragment(), ListGamesContract, OnItemClickListener, Ba
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        router = (parentFragment as ContainerFragment).cicerone.router
         clearAdapter()
         recyclerGames.adapter = adapter
         recyclerGames.layoutManager = LinearLayoutManager(context)
-        adapter.setOnItemClickListener(this)
+        adapter.onItemSelected.subscribe(){
+            router.navigateTo(GameDetailsFragment.className, it)
+        }
 
         presenter.getListGames()
-    }
-
-    override fun onClick(game: Game) {
-        router.navigateTo(GameDetailsFragment.className, game)
     }
 
     override fun onBackPressed(): Boolean {
