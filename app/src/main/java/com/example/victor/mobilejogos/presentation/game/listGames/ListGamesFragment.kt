@@ -18,13 +18,15 @@ import kotlinx.android.synthetic.main.fragment_list_games.*
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-class ListGamesFragment : Fragment(), ListGamesContract, OnItemClickListener, BackButtonListener{
+class ListGamesFragment : Fragment(), ListGamesContract, BackButtonListener{
 
     @Inject
     lateinit var presenter: ListGamesPresenter
 
-    lateinit var adapter: ListGamesAdapter
     lateinit var router: Router
+
+    lateinit var adapter: ListGamesAdapter
+
     var container: ViewGroup? = null
 
     companion object {
@@ -61,12 +63,10 @@ class ListGamesFragment : Fragment(), ListGamesContract, OnItemClickListener, Ba
 
         recyclerGames.adapter = adapter
         recyclerGames.layoutManager = LinearLayoutManager(context)
-        adapter.setOnItemClickListener(this)
+        adapter.onItemSelected.subscribe {
+            router.navigateTo(GameDetailsFragment.className, it)
+        }
         presenter.getListGames()
-    }
-
-    override fun onClick(game: Game) {
-        router.navigateTo(GameDetailsFragment.className, game)
     }
 
     override fun onBackPressed(): Boolean {
